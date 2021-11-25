@@ -1,6 +1,7 @@
 package com.example.myapplication2
 
 import android.content.ContentUris
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -19,12 +20,28 @@ import java.io.File
 
 
 class InstagramUploadActivity : AppCompatActivity() {
+
+    lateinit var filePath: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_instagram_upload)
 
         view_pictures.setOnClickListener {
             getPicture()
+        }
+        upload_post.setOnClickListener {
+            uploadPost()
+        }
+
+        all_list.setOnClickListener {
+            startActivity(Intent(this, InstagramPostListActivity::class.java))
+        }
+        my_list.setOnClickListener {
+            startActivity(Intent(this, InstagramMyPostListActivity::class.java))
+        }
+        user_info.setOnClickListener {
+            startActivity(Intent(this, InstagramUserInfo::class.java))
         }
     }
 
@@ -41,8 +58,7 @@ class InstagramUploadActivity : AppCompatActivity() {
 
         if (requestCode == 1000) {
             val uri: Uri = data!!.data!!
-            val a = getImageFilePath(uri)
-            Log.d("pathh", "path: $a")
+            filePath = getImageFilePath(uri)
         }
     }
 
@@ -56,20 +72,27 @@ class InstagramUploadActivity : AppCompatActivity() {
         return cursor.getString(columnIndex)
     }
 
-    fun uploadPost(filePath: String) {
+    fun uploadPost() {
         val file = File(filePath)
         val fileRequestBody = RequestBody.create(MediaType.parse("image/*"), file)
         val part = MultipartBody.Part.createFormData("image", file.name, fileRequestBody)
         val content = RequestBody.create(MediaType.parse("text/plain"), getContent())
 
         (application as MasterApplication).service.uploadPost(part, content)
-            .enqueue(object : Callback<Post>{
+            .enqueue(object : Callback<Post> {
                 override fun onResponse(call: Call<Post>, response: Response<Post>) {
-
+                    if (response.isSuccessful) {
+                        finish()
+                        startActivity(
+                            Intent(
+                                this@InstagramUploadActivity,
+                                InstagramMyPostListActivity::class.java
+                            )
+                        )
+                    }
                 }
 
                 override fun onFailure(call: Call<Post>, t: Throwable) {
-
                 }
             })
     }
