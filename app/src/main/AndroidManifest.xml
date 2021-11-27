@@ -21,9 +21,6 @@
             android:name=".InstagramMyPostListActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity2"
-            android:exported="false" />
-        <activity
             android:name=".InstagramUserInfo"
             android:exported="false" />
         <activity
