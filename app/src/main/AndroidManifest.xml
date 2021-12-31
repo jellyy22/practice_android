@@ -13,7 +13,23 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyApplication2">
+        android:theme="@style/Theme.MyApplication2"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".MelonActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".YoutubeDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".YoutubeActivity"
+            android:exported="true" />
         <activity
             android:name=".InstagramUploadActivity"
             android:exported="false" />
@@ -31,13 +47,7 @@
             android:exported="false" />
         <activity
             android:name=".EmailSignupActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".PermissionActivity"
             android:exported="true" />
